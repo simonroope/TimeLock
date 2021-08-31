@@ -7,6 +7,8 @@ contract Timelock {
   uint public immutable end;
   address payable public immutable owner;
 
+  event Transfer(address, uint256);
+
   constructor(address payable _owner) {
     end = block.timestamp + duration;
     owner = _owner; 
@@ -25,6 +27,7 @@ contract Timelock {
       owner.transfer(amount);
     } else {
       IERC20(token).transfer(owner, amount);
+      emit Transfer(msg.sender, amount);
     }
   }
 }
